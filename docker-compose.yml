@@ -1,0 +1,45 @@
+version: '3.8'
+
+################## LinuxGSM with Ark Server ###################
+# https://hub.docker.com/r/gameservermanagers/linuxgsm-docker #
+# https://docs.linuxgsm.com/game-servers/ark-survival-evolved #
+###############################################################
+
+services:
+
+  pve-lost-island:
+    image: gameservermanagers/linuxgsm-docker:latest
+    env_file:
+      - .env
+    ports:
+      - '32330:32330/tcp'
+      - '27015:27015/udp'
+      - '7777:7777/udp'
+      - '7778:7778/udp'
+    volumes:
+       - pve_lost_island:/home/linuxgsm:rw
+       - ./config/Game.ini:/home/linuxgsm/serverfiles/ShooterGame/Saved/Config/LinuxServer/Game.ini:ro
+       - ./config/pve_lost_island/GameUserSettings.ini:/home/linuxgsm/serverfiles/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini:ro
+       - ./config/pve_lost_island/arkserver.cfg:/home/linuxgsm/lgsm/config-lgsm/arkserver/arkserver.cfg:ro
+    restart: unless-stopped
+
+  pve-extinction:
+    image: gameservermanagers/linuxgsm-docker:latest
+    env_file:
+      - .env
+    ports:
+      - '32331:32331/tcp'
+      - '27016:27016/udp'
+      - '7779:7779/udp'
+      - '7780:7780/udp'
+    volumes:
+       - pve_extinction:/home/linuxgsm:rw
+       - ./config/Game.ini:/home/linuxgsm/serverfiles/ShooterGame/Saved/Config/LinuxServer/Game.ini:ro
+       - ./config/pve_extinction/GameUserSettings.ini:/home/linuxgsm/serverfiles/ShooterGame/Saved/Config/LinuxServer/GameUserSettings.ini:ro
+       - ./config/pve_extinction/arkserver.cfg:/home/linuxgsm/lgsm/config-lgsm/arkserver/arkserver.cfg:ro
+    restart: unless-stopped
+
+
+volumes:
+  pve_lost_island:
+  pve_extinction:
